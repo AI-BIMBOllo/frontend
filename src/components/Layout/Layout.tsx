@@ -7,8 +7,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <DataProvider>
       <main className={styles.main}>
-        <Sidebar />
-        {children}
+        <Sidebar className={styles.sidebar} />
+        <div className={styles.panel}>
+          {children}
+        </div>
       </main>
     </DataProvider>
   )

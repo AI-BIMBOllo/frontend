@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styles from './Sidebar.module.css';
 
-const Sidebar = () => {
+const Sidebar = ({ className }: { className?: string }) => {
     interface NavLink {
         href: string;
         icon: string;
@@ -12,7 +12,7 @@ const Sidebar = () => {
 
     const navLinks: NavLink[] = [
         {
-            href: '/dashboard',
+            href: '/',
             icon: 'dashboard',
             label: 'Panel'
         },
@@ -34,13 +34,15 @@ const Sidebar = () => {
     ]
     
   return (
-    <nav className={styles.sidebar}>
+    <nav className={`${className} ${styles.sidebar}`}>
       <div className="container">
             <div className={styles.content}>
                 <h1>Bimbo</h1>
                 <ul>
                     {navLinks.map((navLink) => (
-                        <li key={navLink.href}><Link href={navLink.href}>{navLink.label}</Link></li>
+                        <li key={navLink.href}>
+                            <Link href={navLink.href}>{navLink.label}</Link>
+                        </li>
                     ))}
                 </ul>
                 <div className={styles.footer}>

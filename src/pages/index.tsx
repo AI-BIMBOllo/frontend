@@ -19,6 +19,7 @@ export default function Home() {
         Hola {user?.name}
         <br />
         <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} />
+        <br />
         <button onClick={() => setUser({ id: "1", name: name })}>Create User</button>
       </section>
     </>
