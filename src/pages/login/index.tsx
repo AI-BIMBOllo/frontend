@@ -28,8 +28,12 @@ export default function LoginPage() {
       if (response.ok) {
         // Store the token in localStorage
         localStorage.setItem('token', data.access_token);
-        // Update user context
-        setUser({ username: formData.username });
+        // Update user context with all required fields from the API response
+        setUser({
+          id: data.user.id,
+          username: data.user.username,
+          email: data.user.email
+        });
         // Redirect to home or dashboard
         window.location.href = '/';
       } else {
