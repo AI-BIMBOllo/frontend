@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface User {
   id: string;
@@ -19,8 +19,30 @@ export const DataContext = createContext<DataContextType>({
 export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    // Check for existing session
+    const token = localStorage.getItem('token');
+    const savedUser = localStorage.getItem('user');
+    
+    if (token && savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (err) {
+        // If parsing fails, clear invalid data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    }
+  }, []);
+
+  // Modify setUser to also save to localStorage
+  const handleSetUser = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
   return (
-    <DataContext.Provider value={{ user, setUser }}>{children}</DataContext.Provider>
+    <DataContext.Provider value={{ user, setUser: handleSetUser }}>{children}</DataContext.Provider>
   );
 };
 

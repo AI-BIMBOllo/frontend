@@ -1,9 +1,10 @@
 import React from "react";
 import Head from "next/head";
 import { useDataContext } from "@/context/DataContext";
+import { API_URL } from "@/config";
 
 export default function LoginPage() {
-  const { user, setUser } = useDataContext();
+  const { setUser } = useDataContext();
   const [formData, setFormData] = React.useState({
     username: '',
     password: ''
@@ -15,7 +16,7 @@ export default function LoginPage() {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,6 +29,7 @@ export default function LoginPage() {
       if (response.ok) {
         // Store the token in localStorage
         localStorage.setItem('token', data.access_token);
+        localStorage.setItem('user', JSON.stringify(data.user));
         // Update user context with all required fields from the API response
         setUser({
           id: data.user.id,
@@ -43,6 +45,24 @@ export default function LoginPage() {
       setError('Network error occurred');
       console.error('Login error:', err);
     }
+  };
+
+  const handleSubmitDummy = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    setUser({
+      id: "123",
+      username: formData.username,
+      email: "user@example.com"
+    });
+    localStorage.setItem('token', 'dummy-token-123');
+    localStorage.setItem('user', JSON.stringify({
+      id: "123",
+      username: formData.username,
+      email: "user@example.com"
+    }));
+    window.location.href = '/';
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +84,7 @@ export default function LoginPage() {
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-sm">
+        <form onSubmit={handleSubmitDummy} className="flex flex-col gap-4 max-w-sm">
           <div>
             <label htmlFor="username" className="block mb-1">Username</label>
             <input
