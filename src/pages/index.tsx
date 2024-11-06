@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import { useDataContext } from "@/context/DataContext";
+import Cluster from "@/components/Cluster/Cluster";
 
 export default function Home() {
   const { user, setUser } = useDataContext();
 
   const [name, setName] = useState("");
+
+  // Add dummy data for testing
+  const dummyTables = [
+    { id: "1", name: "Users Table" },
+    { id: "2", name: "Products Table" },
+    { id: "3", name: "Orders Table" },
+  ];
 
   return (
     <>
@@ -16,11 +24,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="container">
-        Hola {user?.name}
+        Hola {user?.username}
         <br />
-        <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} />
         <br />
-        <button onClick={() => setUser({ id: "1", name: name })}>Create User</button>
+        <div className="clusters">
+          <Cluster
+            title="Test Cluster"
+            tables={dummyTables}
+            region="us-west-1"
+            className="test-cluster"
+          />
+        </div>
       </section>
     </>
   );
