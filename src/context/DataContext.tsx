@@ -36,9 +36,13 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // Modify setUser to also save to localStorage
-  const handleSetUser = (userData: User) => {
+  const handleSetUser = (userData: User | null) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    if (userData) {
+      localStorage.setItem('user', JSON.stringify(userData));
+    } else {
+      localStorage.removeItem('user');
+    }
   };
 
   return (

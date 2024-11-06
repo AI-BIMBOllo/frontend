@@ -1,9 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
-
+import { useDataContext } from '@/context/DataContext';
 import styles from './Sidebar.module.css';
 
 const Sidebar = ({ className }: { className?: string }) => {
+    const { setUser } = useDataContext();
+
+    const handleLogout = () => {
+        // Clear user context
+        setUser(null);
+        // Remove from localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        // Redirect to login
+        window.location.href = '/login';
+    };
+
     interface NavLink {
         href: string;
         icon: string;
@@ -46,7 +58,7 @@ const Sidebar = ({ className }: { className?: string }) => {
                     ))}
                 </ul>
                 <div className={styles.footer}>
-                    <button>Cerrar sesión</button>
+                    <button onClick={handleLogout}>Cerrar sesión</button>
                 </div>
             </div>
         </div>
