@@ -93,7 +93,7 @@ export default function LoginPage() {
               {error}
             </div>
           )}
-          <form onSubmit={handleSubmit}> {/* Attach handleSubmit */}
+          <form onSubmit={handleSubmitDummy}> {/* Attach handleSubmit */}
             <div className={styles.formContent}>
               <label htmlFor="exampleInputEmail1" className="form-label">
                 Usuario
