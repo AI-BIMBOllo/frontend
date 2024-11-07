@@ -1,11 +1,23 @@
 import React from 'react';
 import Link from 'next/link';
+import { useDataContext } from '@/context/DataContext';
+import styles from './Sidebar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDashboard, faTruck, faUser, faCog, faMap } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './Sidebar.module.css';
-
 const Sidebar = ({ className }: { className?: string }) => {
+    const { setUser } = useDataContext();
+
+    const handleLogout = () => {
+        // Clear user context
+        setUser(null);
+        // Remove from localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        // Redirect to login
+        window.location.href = '/login';
+    };
+
     interface NavLink {
         href: string;
         icon: any; // Adjust type based on the library, e.g., `any` for Font Awesome
@@ -51,7 +63,7 @@ const Sidebar = ({ className }: { className?: string }) => {
                         ))}
                     </ul>
                     <div className={styles.footer}>
-                        <button className={styles.button}>Cerrar sesión</button>
+                        <button className={styles.button} onClick={handleLogout}>Cerrar sesión</button>
                     </div>
                 </div>
             </div>
