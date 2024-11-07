@@ -37,6 +37,8 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
+
   return (
     <DataProvider>
       <AuthWrapper>

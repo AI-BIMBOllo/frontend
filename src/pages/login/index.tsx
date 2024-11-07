@@ -1,7 +1,10 @@
 import React from "react";
 import Head from "next/head";
+import { useRouter } from 'next/router';
 import { useDataContext } from "@/context/DataContext";
 import { API_URL } from "@/config";
+    
+import styles from "./Login.module.css";
 
 export default function LoginPage() {
   const { setUser } = useDataContext();
@@ -77,46 +80,60 @@ export default function LoginPage() {
       <Head>
         <title>Login</title>
       </Head>
-      <section className="container">
-        <h1>Login</h1>
-        {error && (
-          <div className="text-red-500 mb-4">
-            {error}
-          </div>
-        )}
-        <form onSubmit={handleSubmitDummy} className="flex flex-col gap-4 max-w-sm">
-          <div>
-            <label htmlFor="username" className="block mb-1">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block mb-1">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
-          <button 
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-          >
-            Login
-          </button>
-        </form>
+      <section className={styles.loginContainer}>
+        <div className={styles.imageContainer}>
+          <img src="images/trucks.png" alt="Image" />
+        </div>
+        <div className={styles.formContainer}>
+          <h1>Bienvenido al panel de administrador</h1>
+          <h2>Inicié sesión para continuar</h2>
+          <p>Ingrese su correo electrónico y contraseña</p>
+          {error && (
+            <div className="text-red-500 mb-4">
+              {error}
+            </div>
+          )}
+          <form onSubmit={handleSubmit}> {/* Attach handleSubmit */}
+            <div className={styles.formContent}>
+              <label htmlFor="exampleInputEmail1" className="form-label">
+                Usuario
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                className="form-control"
+                placeholder="Ingresa nombre de usuario"
+                aria-describedby="emailHelp"
+              />
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Contraseña
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Ingresa contraseña"
+                required
+              />
+              <button
+                type="submit"
+                className={styles.loginButton}
+              >
+                Iniciar sesión
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
     </>
   );
 }
+
+
