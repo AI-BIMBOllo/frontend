@@ -1,57 +1,62 @@
 import React from 'react';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDashboard, faTruck, faUser, faCog, faMap } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Sidebar.module.css';
 
 const Sidebar = ({ className }: { className?: string }) => {
     interface NavLink {
         href: string;
-        icon: string;
+        icon: any; // Adjust type based on the library, e.g., `any` for Font Awesome
         label: string;
     }
 
     const navLinks: NavLink[] = [
         {
-            href: '/',
-            icon: 'dashboard',
-            label: 'Panel'
+            href: '/panel',
+            icon: faDashboard,
+            label: 'Dashboard'
         },
         {
             href: '/trucks',
-            icon: 'truck',
-            label: 'Camiones'
+            icon: faTruck,
+            label: 'CEDIS'
         },
         {
             href: '/account',
-            icon: 'user',
-            label: 'Cuenta'
+            icon: faMap,
+            label: 'Rutas'
         },
         {
             href: '/settings',
-            icon: 'settings',
+            icon: faCog,
             label: 'Ajustes'
-        }
-    ]
+        },
+    ];
     
-  return (
-    <nav className={`${className} ${styles.sidebar}`}>
-      <div className="container">
-            <div className={styles.content}>
-                <h1>Bimbo</h1>
-                <ul>
-                    {navLinks.map((navLink) => (
-                        <li key={navLink.href}>
-                            <Link href={navLink.href}>{navLink.label}</Link>
-                        </li>
-                    ))}
-                </ul>
-                <div className={styles.footer}>
-                    <button>Cerrar sesión</button>
+    return (
+        <nav className={`${className} ${styles.sidebar}`}>
+            <div className="container">
+                <div className={styles.content}>
+                    <h1>Bimbo</h1>
+                    <ul>
+                        {navLinks.map((navLink) => (
+                            <li className={styles.buttons} key={navLink.href}>
+                                <Link className={styles.buttons} href={navLink.href}>
+                                    <FontAwesomeIcon icon={navLink.icon} className={styles.icon} />
+                                    <span>{navLink.label}</span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className={styles.footer}>
+                        <button className={styles.button}>Cerrar sesión</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-  )
-}
+        </nav>
+    );
+};
 
 export default Sidebar;

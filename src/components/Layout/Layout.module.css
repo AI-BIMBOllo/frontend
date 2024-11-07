@@ -1,3 +1,7 @@
-.main { display: flex; }
+.main { 
+    display: flex;
+    margin-left: 200px; 
+    padding: 0px 10px;
+}
 .sidebar { flex: 1 0 auto; }
 .panel { flex: 1 1 auto; }
