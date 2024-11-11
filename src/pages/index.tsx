@@ -1,12 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useDataContext } from "@/context/DataContext";
 import Cluster from "@/components/Cluster/Cluster";
+import { io, Socket } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { API_URL } from "@/config";
+
 
 export default function Home() {
+  let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+
   const { user, setUser } = useDataContext();
 
   const [name, setName] = useState("");
+
+  // Websocket connection
+  useEffect(() => {
+    // Connect to the server
+    socket = io(API_URL);
+    // Listen for events
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+    socket.on('updates', (data) => {
+      console.log('Received response:', data);
+    });
+    return () => {
+      // Disconnect from the server
+      socket.disconnect();
+    };
+  }, []);
 
   // Add dummy data for testing
   const dummyTables = [
