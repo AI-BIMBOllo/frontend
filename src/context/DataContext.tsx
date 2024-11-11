@@ -8,7 +8,7 @@ interface User {
 
 interface DataContextType {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 }
 
 export const DataContext = createContext<DataContextType>({
