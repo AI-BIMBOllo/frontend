@@ -17,15 +17,15 @@ export default function AccountPage() {
         <div className="bg-white p-6 rounded-lg shadow-md max-w-md">
           <div className="mb-4">
             <label className="font-semibold">Username:</label>
-            <p>{user.username}</p>
+            <p>{user?.username}</p>
           </div>
           <div className="mb-4">
             <label className="font-semibold">Email:</label>
-            <p>{user.email}</p>
+            <p>{user?.email}</p>
           </div>
           <div className="mb-4">
             <label className="font-semibold">User ID:</label>
-            <p>{user.id}</p>
+            <p>{user?.id}</p>
           </div>
         </div>
       </section>
