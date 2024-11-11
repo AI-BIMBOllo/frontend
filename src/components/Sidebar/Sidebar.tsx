@@ -28,7 +28,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         {
             href: '/panel',
             icon: faDashboard,
-            label: 'Dashboard'
+            label: 'Panel'
         },
         {
             href: '/trucks',
@@ -41,9 +41,14 @@ const Sidebar = ({ className }: { className?: string }) => {
             label: 'Rutas'
         },
         {
-            href: '/settings',
+            href: '/camera',
+            icon: faMap,
+            label: 'Camera'
+        },
+        {
+            href: '/account',
             icon: faCog,
-            label: 'Ajustes'
+            label: 'Cuenta'
         },
     ];
     

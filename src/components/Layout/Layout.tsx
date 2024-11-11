@@ -11,8 +11,7 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const isLoginPage = router.pathname === '/login';
 
   useEffect(() => {
-    // If no user and not on login page, redirect to login
-    if (!user && !isLoginPage) {
+    if (!user) {
       router.push('/login');
     }
     // If user exists and on login page, redirect to home
