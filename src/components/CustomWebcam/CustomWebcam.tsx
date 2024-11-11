@@ -8,12 +8,14 @@ const videoConstraints = {
 };
 
 const CustomWebcam = () => {
-    const [image, setImage] = useState(null);
-    const webcamRef = useRef(null);
+    const [image, setImage] = useState<string | null>(null);
+    const webcamRef = useRef<Webcam>(null);
     const capture = useCallback(
         () => {
-            const imageSrc = webcamRef.current.getScreenshot();
-            setImage(imageSrc);
+            const imageSrc = webcamRef.current?.getScreenshot();
+            if (imageSrc) {
+                setImage(imageSrc);
+            }
         },
         [webcamRef]
     );
