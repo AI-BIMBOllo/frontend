@@ -50,6 +50,11 @@ const Sidebar = ({ className }: { className?: string }) => {
             icon: faCog,
             label: 'Cuenta'
         },
+        {
+            href: '/user',
+            icon: faUser,
+            label: 'Usuario'
+        }
     ];
     
     return (
