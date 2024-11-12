@@ -44,10 +44,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ isAdmin = false }) => {
     fetchPhotoLocations();
   }, []);
 
-  // Agregar pines al mapa cuando `map` y `pins` están disponibles
+
+  // Agregar pines al mapa y ajustar los límites del mapa
   useEffect(() => {
     if (map && pins.length > 0) {
       console.log("Agregando pines al mapa...");
+      const bounds = new google.maps.LatLngBounds();
+
       pins.forEach((location: Pin) => {
         const marker = new google.maps.Marker({
           position: { lat: location.lat, lng: location.lng },
@@ -56,21 +59,28 @@ const MapComponent: React.FC<MapComponentProps> = ({ isAdmin = false }) => {
         });
 
         const infoWindow = new google.maps.InfoWindow({
-          content: `<div><strong>${location.description || "Ubicación de foto"}</strong></div>`,
+          content: <div><strong>${location.description || "Ubicación de foto"}</strong></div>,
         });
 
         marker.addListener("click", () => {
           infoWindow.open(map, marker);
         });
 
+        // Extender los límites del mapa para incluir este marcador
+        bounds.extend(new google.maps.LatLng(location.lat, location.lng));
+
         console.log("Pin agregado:", location);
       });
+
+      // Ajustar el centro y el zoom del mapa para mostrar todos los pines
+      map.fitBounds(bounds);
     }
   }, [map, pins]);
+
 
   return (
     <div id="map" style={{ height: "500px", width: "80%", marginLeft:"200px"}}></div>
   );
 };
 
-export default MapComponent;
+export default MapComponent;
