@@ -9,6 +9,7 @@ const videoConstraints = {
 };
 
 const CustomWebcam = () => {
+
   const [image, setImage] = useState<string | null>(null);
   const webcamRef = useRef<Webcam>(null);
 
@@ -34,7 +35,7 @@ const CustomWebcam = () => {
             console.error("Error al enviar la ubicación:", error);
             alert("Error al enviar la ubicación");
           }
-        },
+
         (error) => {
           console.error("Error al obtener la ubicación:", error);
           alert("No se pudo obtener la ubicación");
