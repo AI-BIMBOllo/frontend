@@ -21,7 +21,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ isAdmin = false }) => {
     const initMap = () => {
       const mapInstance = new google.maps.Map(document.getElementById("map") as HTMLElement, {
         zoom: 12,
-        center: { lat: 19.4326, lng: -99.1332 }, // Centro en Ciudad de México
+        center: { lat: 19.4326, lng: -99.1332 }, // Centro inicial en Ciudad de México
       });
       setMap(mapInstance);
     };
@@ -44,7 +44,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ isAdmin = false }) => {
     fetchPhotoLocations();
   }, []);
 
-
   // Agregar pines al mapa y ajustar los límites del mapa
   useEffect(() => {
     if (map && pins.length > 0) {
@@ -55,11 +54,11 @@ const MapComponent: React.FC<MapComponentProps> = ({ isAdmin = false }) => {
         const marker = new google.maps.Marker({
           position: { lat: location.lat, lng: location.lng },
           map: map,
-          title: location.description || "Ubicación de foto",
+          title: location.description ,
         });
 
         const infoWindow = new google.maps.InfoWindow({
-          content: <div><strong>${location.description || "Ubicación de foto"}</strong></div>,
+          content: `<div><strong>${location.description }</strong></div>`,
         });
 
         marker.addListener("click", () => {
@@ -77,10 +76,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ isAdmin = false }) => {
     }
   }, [map, pins]);
 
-
   return (
-    <div id="map" style={{ height: "500px", width: "80%", marginLeft:"200px"}}></div>
+    <div id="map" style={{ height: "500px", width: "80%", marginLeft: "200px" }}></div>
   );
 };
 
-export default MapComponent;
+export default MapComponent;
