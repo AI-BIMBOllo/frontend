@@ -13,7 +13,7 @@ export default function PanelPage() {
     formData.append('file', data.file[0]);
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/data/forthcoming', formData, {
+      const response = await axios.post('http://127.0.0.1:5000/data/xlsx', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
