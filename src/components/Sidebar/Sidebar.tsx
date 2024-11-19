@@ -65,9 +65,9 @@ const Sidebar = ({ className }: { className?: string }) => {
                     <ul>
                         {navLinks.map((navLink) => (
                             <li className={styles.buttons} key={navLink.href}>
-                                <Link className={styles.buttons} href={navLink.href}>
-                                    <FontAwesomeIcon icon={navLink.icon} className={styles.icon} />
-                                    <span>{navLink.label}</span>
+                                <Link href={navLink.href} key={navLink.href} className={styles.buttons}>
+                                <FontAwesomeIcon icon={navLink.icon} className={styles.icon} />
+                                <span>{navLink.label}</span>
                                 </Link>
                             </li>
                         ))}

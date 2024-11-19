@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 100vh;
+    padding: 20px;
+  }
+  
+  .mapContainer {
+    flex: 2;
+    margin-right: 20px;
+    background-color: white;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 100%; /* Asegúrate de que ocupe todo el alto */
+  }
+  
+  
+  .tableContainer {
+    flex: 1; /* Puedes ajustar el tamaño relativo del contenedor de la tabla */
+    background-color: white; /* Cambiado a blanco */
+    padding: 20px;
+    border: 1px solid #ccc; /* Borde opcional */
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+  }
+  

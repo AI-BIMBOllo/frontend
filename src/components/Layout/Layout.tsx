@@ -11,14 +11,17 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const isLoginPage = router.pathname === '/login';
 
   useEffect(() => {
+    console.log("Checking user authentication status:", user); // Agrega esta línea para depuración
     if (!user) {
+      console.log("Redirecting to login because user is not authenticated");
       router.push('/login');
     }
-    // If user exists and on login page, redirect to home
+    // Si el usuario existe y estás en la página de login, redirige al home
     if (user && isLoginPage) {
       router.push('/');
     }
   }, [user, isLoginPage, router]);
+  
 
   // Show loading or nothing while redirecting
   if (!user && !isLoginPage) {
