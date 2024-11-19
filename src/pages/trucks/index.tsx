@@ -68,8 +68,8 @@ interface Shipment {
             }));
             setMapData(formattedData);
           }
-        } catch (error) {
-          console.error("Error fetching shipments:", error);
+        } catch (error: any) {
+          console.error("Error fetching shipments:", error.message);
         }
       };
   
