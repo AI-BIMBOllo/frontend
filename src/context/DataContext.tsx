@@ -20,23 +20,26 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Check for existing session
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
+    console.log("Token:", token);
+    console.log("Saved user:", savedUser);
     
     if (token && savedUser) {
       try {
         setUser(JSON.parse(savedUser));
       } catch (err) {
-        // If parsing fails, clear invalid data
+        console.error("Error parsing user from localStorage:", err);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
       }
     }
   }, []);
+  
 
   // Modify setUser to also save to localStorage
   const handleSetUser = (userData: User | null) => {
+    console.log("Setting user data:", userData); // Agrega esto para depurar
     setUser(userData);
     if (userData) {
       localStorage.setItem('user', JSON.stringify(userData));
@@ -44,6 +47,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.removeItem('user');
     }
   };
+  
 
   return (
     <DataContext.Provider value={{ user, setUser: handleSetUser }}>{children}</DataContext.Provider>
