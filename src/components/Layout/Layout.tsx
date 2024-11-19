@@ -1,33 +1,35 @@
 import React, { useEffect } from 'react';
-import { DataProvider, useDataContext } from '@/context/DataContext';
+import { useDataContext } from '@/context/DataContext';
 import { Sidebar } from '@/components/Sidebar';
 import { useRouter } from 'next/router';
 import styles from './Layout.module.css';
 
-// Create a wrapper component to handle auth
-const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useDataContext();
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { setUser } = useDataContext();
   const router = useRouter();
   const isLoginPage = router.pathname === '/login';
 
   useEffect(() => {
-    console.log("Checking user authentication status:", user); // Agrega esta línea para depuración
-    if (!user) {
-      console.log("Redirecting to login because user is not authenticated");
+    const token = localStorage.getItem('token');
+    const savedUser = localStorage.getItem('user');
+    
+    if (token && savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        if (!userData) {
+          router.push('/login');
+        }
+        setUser(userData);
+      } catch (err) {
+        console.error("Error parsing user from localStorage:", err);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    } else {
       router.push('/login');
     }
-    // Si el usuario existe y estás en la página de login, redirige al home
-    if (user && isLoginPage) {
-      router.push('/');
-    }
-  }, [user, isLoginPage, router]);
+  }, []);
   
-
-  // Show loading or nothing while redirecting
-  if (!user && !isLoginPage) {
-    return null; // or return a loading spinner
-  }
-
   return (
     <main className={styles.main}>
       {!isLoginPage && <Sidebar className={styles.sidebar} />}
@@ -35,18 +37,6 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
         {children}
       </div>
     </main>
-  );
-};
-
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-
-  return (
-    <DataProvider>
-      <AuthWrapper>
-        {children}
-      </AuthWrapper>
-    </DataProvider>
   );
 };
 

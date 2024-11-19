@@ -30,30 +30,25 @@ const Sidebar = ({ className }: { className?: string }) => {
             icon: faDashboard,
             label: 'Panel'
         },
+        // {
+        //     href: '/trucks',
+        //     icon: faTruck,
+        //     label: 'CEDIS'
+        // },
         {
             href: '/trucks',
-            icon: faTruck,
-            label: 'CEDIS'
-        },
-        {
-            href: '/account',
             icon: faMap,
             label: 'Rutas'
         },
         {
             href: '/camera',
-            icon: faMap,
+            icon: faCog,
             label: 'Camera'
         },
         {
             href: '/account',
-            icon: faCog,
-            label: 'Cuenta'
-        },
-        {
-            href: '/user',
             icon: faUser,
-            label: 'Usuario'
+            label: 'Cuenta'
         }
     ];
     
