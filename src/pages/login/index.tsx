@@ -7,7 +7,8 @@ import { API_URL } from "@/config";
 import styles from "./Login.module.css";
 
 export default function LoginPage() {
-  const { setUser } = useDataContext();
+  const router = useRouter();
+  const { user, setUser } = useDataContext();
   const [formData, setFormData] = React.useState({
     username: '',
     password: ''
@@ -74,6 +75,10 @@ export default function LoginPage() {
       [e.target.name]: e.target.value
     });
   };
+
+  if (user) {
+    router.push('/');
+  }
 
   return (
     <>
