@@ -1,56 +1,47 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 interface User {
-  id: string;
+  identifier: string;
   username: string;
+  name: string;
+  first_lastname: string;
+  second_lastname: string;
   email: string;
+  phone: string;
+  position: number;
+  order_estimated_shipments: number;
+  supply_estimated_shipments: number;
 }
 
 interface DataContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
 }
 
 export const DataContext = createContext<DataContextType>({
   user: null,
   setUser: () => {},
+  token: null,
+  setToken: () => {}
 });
 
 export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    console.log("Token:", token);
-    console.log("Saved user:", savedUser);
-    
-    if (token && savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (err) {
-        console.error("Error parsing user from localStorage:", err);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-      }
-    }
-  }, []);
-  
-
-  // Modify setUser to also save to localStorage
-  const handleSetUser = (userData: User | null) => {
-    console.log("Setting user data:", userData); // Agrega esto para depurar
-    setUser(userData);
-    if (userData) {
-      localStorage.setItem('user', JSON.stringify(userData));
+  const handleSetToken = (token: string | null) => {
+    setToken(token);
+    if (token) {
+      localStorage.setItem('token', token);
     } else {
-      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
   };
-  
 
   return (
-    <DataContext.Provider value={{ user, setUser: handleSetUser }}>{children}</DataContext.Provider>
+    <DataContext.Provider value={{ user, setUser, token, setToken: handleSetToken }}>{children}</DataContext.Provider>
   );
 };
 
