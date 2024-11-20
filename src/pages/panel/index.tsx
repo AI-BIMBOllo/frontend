@@ -1,12 +1,15 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Head from "next/head";
 import styles from "./Panel.module.css";
 import MapComponent from "@/components/MapComponent/MapComponent";
+import Table from "@/components/Table/Table";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function PanelPage() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
+  const [originData, setOriginData] = useState<any>([]);
 
   const onSubmit = async (data : any) => {
     const formData = new FormData();
@@ -28,12 +31,31 @@ export default function PanelPage() {
     }
   };
 
+  useEffect(()=>{
+    const loadData = async() => {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/data/origin');
+  
+        if (response.status === 200) {
+          const origins = {
+            headings: [ { text: "Origen", object: "origen" }, { text: "Nombre", object: "nombre_origen" }, { text: "Registro", object: "creation" }],
+            rows: response?.data
+          }
+          setOriginData(origins);
+        }
+      } catch (error) {
+      }
+    }
+    loadData();
+
+  }, []);
+
   return (
     <div>
       <Head>
         <title>Panel</title>
       </Head>
-      <h1>Panel</h1>
+      <h1 onClick={()=>console.log(originData)}>Panel</h1>
       
       <section>
         <div className={styles.formContainer}>
@@ -59,46 +81,7 @@ export default function PanelPage() {
       </section>
 
       <section>
-        <div className={styles.mainContent}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">#Item</th>
-                <th scope="col">Nombre de origen</th>
-                <th scope="col">Orden</th>
-                <th scope="col">Origen</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Table headings={originData.headings} rows={originData.rows} footers={[]}/>
       </section>
 
       {/* Componente del Mapa */}
