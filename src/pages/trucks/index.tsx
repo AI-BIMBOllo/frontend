@@ -11,12 +11,27 @@ interface Shipment {
     title: string;
     description: string;
     is_available: boolean;
+    capacity: number;
   }
 
-  const ShipmentTable: React.FC<{ data: Shipment[], onRowClick: (shipment: Shipment) => void }> = ({ data, onRowClick }) => {
+  const ShipmentTable: React.FC<{ data: Shipment[], onRowClick: (shipment: Shipment) => void, onFilterChange: (capacity: number | null) => void }> = ({ data, onRowClick, onFilterChange }) => {
+    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = event.target.value === "all" ? null : parseInt(event.target.value, 10);
+      onFilterChange(value);
+    };
+  
     return (
       <div style={{ width: '100%' }}>
         <h2 style={{ textAlign: 'left', marginBottom: '10px' }}>CAJAS</h2>
+        <div style={{ marginBottom: '10px' }}>
+          <label htmlFor="capacity-filter" style={{ marginRight: '10px' }}>Filtrar por capacidad:</label>
+          <select id="capacity-filter" onChange={handleFilterChange}>
+            <option value="all">Todos</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+          </select>
+        </div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
@@ -47,26 +62,29 @@ interface Shipment {
     );
   };
   
+  
 
   export default function TrucksPage() {
     const [mapData, setMapData] = useState<Shipment[]>([]);
+    const [filteredData, setFilteredData] = useState<Shipment[]>([]);
     const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
+    const [filterCapacity, setFilterCapacity] = useState<number | null>(null);
   
     useEffect(() => {
-      console.log("Fetching data...");
       const fetchData = async () => {
         try {
           const response = await axios.get("http://localhost:5000/data/shipment");
-          console.log("Resultado Shipments:", response.data);
           if (response.status === 200) {
             const formattedData = response.data.map((item: any) => ({
               lat: item.latitude,
               lng: item.longitude,
               title: item.denomination,
               description: `Capacidad: ${item.capacity}`,
+              capacity: item.capacity,
               is_available: item.is_available
             }));
             setMapData(formattedData);
+            setFilteredData(formattedData);
           }
         } catch (error: any) {
           console.error("Error fetching shipments:", error.message);
@@ -76,6 +94,15 @@ interface Shipment {
       fetchData();
     }, []);
   
+    const handleFilterChange = (capacity: number | null) => {
+      setFilterCapacity(capacity);
+      if (capacity === null) {
+        setFilteredData(mapData);
+      } else {
+        setFilteredData(mapData.filter(item => item.capacity === capacity));
+      }
+    };
+  
     const handleRowClick = (shipment: Shipment) => {
       setSelectedShipment(shipment);
     };
@@ -83,7 +110,7 @@ interface Shipment {
     const handleClosePopup = () => {
       setSelectedShipment(null);
     };
-
+  
     return (
       <>
         <Head>
@@ -91,13 +118,14 @@ interface Shipment {
         </Head>
         <div className={styles.container} style={{ display: 'flex', alignItems: 'flex-start' }}>
           <div className={styles.mapContainer}>
-            <MapComponent pins={mapData} mapContainerId="main-map"/>
+            <MapComponent pins={filteredData} mapContainerId="main-map"/>
           </div>
           <div className={styles.tableContainer} style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-            <ShipmentTable data={mapData} onRowClick={handleRowClick} />
+            <ShipmentTable data={filteredData} onRowClick={handleRowClick} onFilterChange={handleFilterChange} />
           </div>
         </div>
         {selectedShipment && <Popup shipment={selectedShipment} onClose={handleClosePopup} />}
       </>
     );
-}
+  }
+  
