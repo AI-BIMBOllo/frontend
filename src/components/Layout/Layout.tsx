@@ -7,7 +7,7 @@ import styles from './Layout.module.css';
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { setUser } = useDataContext();
   const router = useRouter();
-  const isLoginPage = router.pathname === '/login';
+  const isAuthPage = router.pathname === '/login' || router.pathname === '/register';
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,13 +26,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem('user');
       }
     } else {
-      router.push('/login');
+      if (!isAuthPage) {
+        router.push('/login');
+      }
     }
   }, []);
   
   return (
     <main className={styles.main}>
-      {!isLoginPage && <Sidebar className={styles.sidebar} />}
+      {!isAuthPage && <Sidebar className={styles.sidebar} />}
       <div className={styles.panel}>
         {children}
       </div>

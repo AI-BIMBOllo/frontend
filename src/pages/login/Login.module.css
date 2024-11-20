@@ -35,6 +35,10 @@
   justify-content: center;
 }
 
+.formContent .column {
+  padding-bottom: 1rem;
+}
+
 .formContent h1,
 .formContent h2,
 .formContent p {
