@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import Head from "next/head";
 import styles from "./Panel.module.css";
 import MapComponent from "@/components/MapComponent/MapComponent";
-import Table from "@/components/Table/Table";
+import Origin from "@/components/Tables/Origin";
+import Item from "@/components/Tables/Item";
+import Order from "@/components/Tables/Order";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function PanelPage() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-
-  const [originData, setOriginData] = useState<any>([]);
 
   const onSubmit = async (data : any) => {
     const formData = new FormData();
@@ -31,31 +31,12 @@ export default function PanelPage() {
     }
   };
 
-  useEffect(()=>{
-    const loadData = async() => {
-      try {
-        const response = await axios.get('http://127.0.0.1:5000/data/origin');
-  
-        if (response.status === 200) {
-          const origins = {
-            headings: [ { text: "Origen", object: "origen" }, { text: "Nombre", object: "nombre_origen" }, { text: "Registro", object: "creation" }],
-            rows: response?.data
-          }
-          setOriginData(origins);
-        }
-      } catch (error) {
-      }
-    }
-    loadData();
-
-  }, []);
-
   return (
     <div>
       <Head>
         <title>Panel</title>
       </Head>
-      <h1 onClick={()=>console.log(originData)}>Panel</h1>
+      <h1>Panel</h1>
       
       <section>
         <div className={styles.formContainer}>
@@ -81,7 +62,9 @@ export default function PanelPage() {
       </section>
 
       <section>
-        <Table headings={originData.headings} rows={originData.rows} footers={[]}/>
+        <Origin/>
+        <Item/>
+        <Order/>
       </section>
 
       {/* Componente del Mapa */}

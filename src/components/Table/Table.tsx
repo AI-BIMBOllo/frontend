@@ -14,7 +14,7 @@ const Table: FC<TableProps> = ({ headings, rows, footers }) => {
                 {headings && headings.length > 0 && (
                     <thead>
                         <tr>
-                            <th>#</th> {/* Columna para numeración */}
+                            <th>#</th>
                             {headings.map((heading, index) => (
                                 <th key={index}>
                                     {heading.text}
@@ -27,7 +27,7 @@ const Table: FC<TableProps> = ({ headings, rows, footers }) => {
                     <tbody>
                         {rows.map((row, rowIndex) => (
                             <tr key={rowIndex}>
-                                <td>{rowIndex + 1}</td> {/* Celda de numeración */}
+                                <td>{rowIndex + 1}</td>
                                 {headings.map((heading, colIndex) => (
                                     <td key={colIndex}>
                                         {row[heading.object]}
@@ -41,7 +41,7 @@ const Table: FC<TableProps> = ({ headings, rows, footers }) => {
                     <tfoot>
                         {footers.map((footer, rowIndex) => (
                             <tr key={rowIndex}>
-                                <td>{rowIndex + 1}</td> {/* Celda de numeración */}
+                                <td>{rowIndex + 1}</td>
                                 {headings.map((heading, colIndex) => (
                                     <td key={colIndex}>
                                         {footer[heading.object]}
