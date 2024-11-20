@@ -16,7 +16,8 @@ export default function RegisterPage() {
     second_lastname: '',
     email: '',
     phone: '',
-    password: ''
+    password: '',
+    position: 1
   });
   const [error, setError] = React.useState('');
 
@@ -25,30 +26,19 @@ export default function RegisterPage() {
     setError('');
     
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       });
-
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token in localStorage
-        localStorage.setItem('token', data.access_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        // Update user context with all required fields from the API response
-        setUser({
-          id: data.user.id,
-          username: data.user.username,
-          email: data.user.email
-        });
-        // Redirect to home or dashboard
-        window.location.href = '/';
+        router.push('/login');
       } else {
-        setError(data.msg || 'Login failed');
+        setError(data.msg || 'Error al registrar');
       }
     } catch (err) {
       setError('Network error occurred');
@@ -104,7 +94,7 @@ export default function RegisterPage() {
                     </div>
                     <div className={`${styles.column} col-12 col-md-6`}>
                         <label htmlFor="name" className="form-label">
-                            Nombre
+                            Nombre(s)
                         </label>
                         <input
                             type="text"
@@ -114,7 +104,7 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             required
                             className="form-control"
-                            placeholder="Nombre"
+                            placeholder="Nombre(s)"
                         />
                     </div>
                     <div className={`${styles.column} col-12 col-md-6`}>
@@ -142,7 +132,6 @@ export default function RegisterPage() {
                             name="second_lastname"
                             value={formData.second_lastname}
                             onChange={handleChange}
-                            required
                             className="form-control"
                             placeholder="Segundo apellido"
                         />
@@ -172,7 +161,6 @@ export default function RegisterPage() {
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            required
                             className="form-control"
                             placeholder="Teléfono"
                         />
