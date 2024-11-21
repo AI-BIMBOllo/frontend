@@ -16,32 +16,18 @@ interface User {
 interface DataContextType {
   user: User | null;
   setUser: (user: User | null) => void;
-  token: string | null;
-  setToken: (token: string | null) => void;
 }
 
 export const DataContext = createContext<DataContextType>({
   user: null,
-  setUser: () => {},
-  token: null,
-  setToken: () => {}
+  setUser: () => {}
 });
 
 export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-
-  const handleSetToken = (token: string | null) => {
-    setToken(token);
-    if (token) {
-      localStorage.setItem('token', token);
-    } else {
-      localStorage.removeItem('token');
-    }
-  };
 
   return (
-    <DataContext.Provider value={{ user, setUser, token, setToken: handleSetToken }}>{children}</DataContext.Provider>
+    <DataContext.Provider value={{ user, setUser }}>{children}</DataContext.Provider>
   );
 };
 

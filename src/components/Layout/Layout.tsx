@@ -13,28 +13,34 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/protected`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const userData = await response.json();
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/protected`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const userData = await response.json();
 
-      if (token) {
-        try {
-          if (!userData) {
+        if (token) {
+          try {
+            if (!userData) {
+              router.push('/login');
+            }
+            setUser(userData);
+          } catch (err) {
+            console.error("Error parsing user from localStorage:", err);
+            localStorage.removeItem('token');
+          }
+        } else {
+          if (!isAuthPage) {
             router.push('/login');
           }
-          setUser(userData);
-        } catch (err) {
-          console.error("Error parsing user from localStorage:", err);
-          localStorage.removeItem('token');
         }
-      } else {
-        if (!isAuthPage) {
-          router.push('/login');
-        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        localStorage.removeItem('token');
+        router.push('/login');
       }
     };
 
