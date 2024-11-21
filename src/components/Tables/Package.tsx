@@ -45,6 +45,7 @@ const Package: FC = () => {
 
     return (
         <>
+            <h2>Paquetes</h2>
             <Filter 
                 attributes={data.headings} 
                 setFilterValue={setFilterValue} 

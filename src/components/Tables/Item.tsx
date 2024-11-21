@@ -42,6 +42,7 @@ const Item: FC = () => {
 
     return (
         <>
+            <h2>Productos</h2>
             <Filter 
                 attributes={data.headings} 
                 setFilterValue={setFilterValue} 

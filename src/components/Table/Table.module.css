@@ -1,5 +1,53 @@
-.table { width: 100%; border-collapse: collapse; margin: 20px 0; } 
-.table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; } 
-.table th { background-color: #f2f2f2; color: #333; font-weight: bold; } 
-.table tr:nth-child(even) { background-color: #f9f9f9; } 
-.table tr:hover { background-color: #f2f2f2; }
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Scroll horizontal */
+    margin: 20px 0;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, 
+.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f2f2f2;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+    overflow-x: auto; /* Scroll horizontal para paginación */
+}
+
+.pagination button {
+    border: none;
+    margin: 0 2px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    font-size: smaller; /* Tamaño de fuente más pequeño */
+}
+
+.pagination button.active {
+    font-weight: bold;
+    background-color: #333;
+    color: #fff;
+}

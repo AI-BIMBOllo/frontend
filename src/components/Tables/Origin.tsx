@@ -42,6 +42,7 @@ const Origin: FC = () => {
 
     return (
         <>
+            <h2>Orígenes</h2>
             <Filter 
                 attributes={data.headings} 
                 setFilterValue={setFilterValue} 

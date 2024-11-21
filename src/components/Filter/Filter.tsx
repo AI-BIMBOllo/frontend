@@ -12,6 +12,7 @@ const Filter: FC<FilterProps> = ({ attributes = [], setFilterValue, setFilterAtt
         <div className={styles.filterContainer}>
             <input 
                 type="text" 
+                placeholder="Buscar..."
                 className={styles.filterInput} 
                 onChange={(e) => setFilterValue(e.target.value)} 
             />

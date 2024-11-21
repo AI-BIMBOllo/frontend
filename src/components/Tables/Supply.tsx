@@ -17,10 +17,10 @@ const Supply: FC = () => {
                 if (response.status === 200) {
                     const origins = {
                         headings: [{ text: "LPN", object: "lpn" },
+                            { text: "Pronóstico", object: "forecast_identifier" },
                             { text: "Recibido", object: "arrived" },
                             { text: "Cantidad", object: "cantidad" },
                             { text: "Carga", object: "carga" },
-                            { text: "Creación", object: "creation" },
                             { text: "Fecha de cierre", object: "fecha_de_cierre" },
                             { text: "Fecha de envío", object: "fecha_de_envio" },
                             { text: "Item", object: "item_identifier" },
@@ -28,7 +28,8 @@ const Supply: FC = () => {
                             { text: "Longitude", object: "longitude" },
                             { text: "Origen", object: "origin_identifier" },
                             { text: "Transporte", object: "shipment_identifier" },
-                            { text: "Usuario", object: "user_identifier" }],
+                            { text: "Usuario", object: "user_identifier" },
+                            { text: "Registro", object: "creation" }],
                         rows: response.data
                     };
                     setData(origins);
@@ -54,6 +55,7 @@ const Supply: FC = () => {
 
     return (
         <>
+            <h2>Suministros</h2>
             <Filter 
                 attributes={data.headings} 
                 setFilterValue={setFilterValue} 

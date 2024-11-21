@@ -4,7 +4,7 @@ import Table from '../Table/Table';
 import Filter from '../Filter/Filter';
 import { API_URL } from "@/config";
 
-const Request: FC = () => {
+const Forecast: FC = () => {
     const [data, setData] = useState<any>({ headings: [], rows: [] });
     const [filterValue, setFilterValue] = useState<string>("");
     const [filterAttribute, setFilterAttribute] = useState<string>("identifier");
@@ -13,20 +13,11 @@ const Request: FC = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await axios.get(`${API_URL}/data/request`);
+                const response = await axios.get(`${API_URL}/data/forecast`);
                 if (response.status === 200) {
                     const origins = {
                         headings: [{ text: "Identificador", object: "identifier" },
-                            { text: "Pronóstico", object: "forecast_identifier" },
-                            { text: "Cantidad asignada", object: "asiggned_quantity" },
-                            { text: "Palette completo", object: "is_full_palette" },
-                            { text: "Item", object: "item_identifier" },
-                            { text: "Orden", object: "order_identifier" },
-                            { text: "Cantidad original del pedido", object: "original_order_quantity" },
-                            { text: "Identificador del paquete", object: "package_identifier" },
-                            { text: "Cantidad empaquetada", object: "packaged_quantity" },
-                            { text: "Cantidad solicitada", object: "requested_quantity" },
-                            { text: "Enviado", object: "shipped" },
+                            { text: "Error", object: "error" },
                             { text: "Registro", object: "creation" },],
                         rows: response.data
                     };
@@ -53,7 +44,7 @@ const Request: FC = () => {
 
     return (
         <>
-            <h2>Pedidos</h2>
+        <h2>Pronósticos</h2>
             <Filter 
                 attributes={data.headings} 
                 setFilterValue={setFilterValue} 
@@ -64,4 +55,4 @@ const Request: FC = () => {
     );
 };
 
-export default Request;
+export default Forecast;

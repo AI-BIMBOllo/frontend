@@ -48,6 +48,7 @@ const Shipment: FC = () => {
 
     return (
         <>
+            <h2>Transportes</h2>
             <Filter 
                 attributes={data.headings} 
                 setFilterValue={setFilterValue} 

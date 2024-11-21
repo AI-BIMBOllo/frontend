@@ -9,6 +9,7 @@ import Supply from "@/components/Tables/Supply";
 import Request from "@/components/Tables/Request";
 import Shipment from "@/components/Tables/Shipment";
 import Package from "@/components/Tables/Package";
+import Forecast from "@/components/Tables/Forecast";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -36,43 +37,45 @@ export default function PanelPage() {
   };
 
   return (
-    <div>
+    <div className="page">
       <Head>
         <title>Panel</title>
       </Head>
       <h1>Panel</h1>
       
       <section>
-        <div className={styles.formContainer}>
-          <h6>Subir archivo Excel</h6>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label htmlFor="file">Seleccione la hoja de cálculo:</label>
-              <input
-                type="file"
-                id="file"
-                {...register('file', { required: true })} 
-                accept=".xlsx,.xls"
-              />
-              
-              {errors.file && <span style={{color: "red"}}>El archivo es obligatorio</span>}
-            </div>
+  <div className={styles.formContainer}>
+    <h6>Subir archivo Excel</h6>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.formGroup}>
+        <label htmlFor="file" className={styles.label}>Seleccione la hoja de cálculo:</label>
+        <input
+          type="file"
+          id="file"
+          className={styles.inputFile}
+          {...register('file', { required: true })}
+          accept=".xlsx,.xls"
+        />
+        {errors.file && <span className={styles.errorMessage}>El archivo es obligatorio</span>}
+      </div>
 
-            <div>
-              <button type="submit">Subir archivo</button>
-            </div>
-          </form>
-        </div>
-      </section>
+      <div>
+        <button type="submit" className={styles.submitButton}>Subir archivo</button>
+      </div>
+    </form>
+  </div>
+</section>
+
 
       <section>
-        {/*<Origin/>
+        <Forecast/>
+        <Origin/>
         <Item/>
         <Order/>
         <Supply/>
         <Request/>
         <Shipment/>
-        <Package/>*/}
+        <Package/>
       </section>
 
       {/* Componente del Mapa */}
