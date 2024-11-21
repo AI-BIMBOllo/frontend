@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useDataContext } from '@/context/DataContext';
 import styles from './Sidebar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDashboard, faTruck, faUser, faCog, faMap } from '@fortawesome/free-solid-svg-icons';
+import { faDashboard, faTruck, faUser, faCog, faMap, faLineChart } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = ({ className }: { className?: string }) => {
     const { setUser } = useDataContext();
@@ -44,6 +44,11 @@ const Sidebar = ({ className }: { className?: string }) => {
             href: '/camera',
             icon: faCog,
             label: 'Camera'
+        },
+        {
+            href: '/forecast',
+            icon: faLineChart,
+            label: 'Predicciones'
         },
         {
             href: '/account',
