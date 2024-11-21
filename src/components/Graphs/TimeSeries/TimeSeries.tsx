@@ -34,7 +34,6 @@ export default function TimeSeries() {
 
   return (
     <div>
-      <h1>Time Series</h1>
       <Line
         data={chartData}  // Pass the fetched data to the chart component
         options={{
@@ -42,7 +41,7 @@ export default function TimeSeries() {
           plugins: {
             title: {
               display: true,
-              text: 'Demanda de Takis Fuego en los siguientes 30 días',
+              text: 'Demanda de productos en los siguientes 30 días',
             },
           },
           interaction: {
