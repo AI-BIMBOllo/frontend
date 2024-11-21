@@ -5,6 +5,10 @@ import MapComponent from "@/components/MapComponent/MapComponent";
 import Origin from "@/components/Tables/Origin";
 import Item from "@/components/Tables/Item";
 import Order from "@/components/Tables/Order";
+import Supply from "@/components/Tables/Supply";
+import Request from "@/components/Tables/Request";
+import Shipment from "@/components/Tables/Shipment";
+import Package from "@/components/Tables/Package";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -62,9 +66,13 @@ export default function PanelPage() {
       </section>
 
       <section>
-        <Origin/>
+        {/*<Origin/>
         <Item/>
         <Order/>
+        <Supply/>
+        <Request/>
+        <Shipment/>
+        <Package/>*/}
       </section>
 
       {/* Componente del Mapa */}

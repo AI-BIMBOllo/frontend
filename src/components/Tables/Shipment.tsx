@@ -4,19 +4,25 @@ import Table from '../Table/Table';
 import Filter from '../Filter/Filter';
 import { API_URL } from "@/config";
 
-const Item: FC = () => {
+const Shipment: FC = () => {
     const [data, setData] = useState<any>({ headings: [], rows: [] });
     const [filterValue, setFilterValue] = useState<string>("");
-    const [filterAttribute, setFilterAttribute] = useState<string>("producto");
+    const [filterAttribute, setFilterAttribute] = useState<string>("identifier");
     const [filteredData, setFilteredData] = useState<any[]>([]);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await axios.get(`${API_URL}/data/item`);
+                const response = await axios.get(`${API_URL}/data/shipment`);
                 if (response.status === 200) {
                     const origins = {
-                        headings: [{ text: "Producto", object: "producto" }, { text: "Organización", object: "organizacion" }, { text: "Descripción", object: "denomination" }, { text: "Cupo", object: "cupo" }, { text: "Activo disponible", object: "active_disponible" }, { text: "Activo asignado", object: "active_asignado" }, { text: "Activo total", object: "active_total" }, { text: "Reserva recibido", object: "reserved_recibido" }, { text: "Reserva ubicado", object: "reserved_ubicado" }, { text: "Reserva parcialmente asignado", object: "reserved_parcialmente_asignado" }, { text: "Reserva asignado", object: "reserved_asignado" }, { text: "Reserva perdido", object: "reserved_perdido" }, { text: "Reserva total", object: "reserved_total" }, { text: "OBLPN picking", object: "oblpn_picking" }, { text: "OBLPN empacado", object: "oblpn_empacado" }, { text: "OBLPN cargado", object: "oblpn_cargado" }, { text: "OBLPN total", object: "oblpn_total" }, { text: "UOM total", object: "uom_total" }, { text: "Total de piezas", object: "total_piezas" }, { text: "Registro", object: "creation" }],
+                        headings: [{ text: "Identificador", object: "identifier" },
+                            { text: "Denominación", object: "denomination" },
+                            { text: "Disponibilidad", object: "is_available" },
+                            { text: "Capacidad", object: "capacity" },
+                            { text: "Latitud", object: "latitude" },
+                            { text: "Longitud", object: "longitude" },
+                            { text: "Registro", object: "creation" }],
                         rows: response.data
                     };
                     setData(origins);
@@ -52,4 +58,4 @@ const Item: FC = () => {
     );
 };
 
-export default Item;
+export default Shipment;

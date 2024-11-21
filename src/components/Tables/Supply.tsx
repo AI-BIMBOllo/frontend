@@ -4,19 +4,31 @@ import Table from '../Table/Table';
 import Filter from '../Filter/Filter';
 import { API_URL } from "@/config";
 
-const Item: FC = () => {
+const Supply: FC = () => {
     const [data, setData] = useState<any>({ headings: [], rows: [] });
     const [filterValue, setFilterValue] = useState<string>("");
-    const [filterAttribute, setFilterAttribute] = useState<string>("producto");
+    const [filterAttribute, setFilterAttribute] = useState<string>("lpn");
     const [filteredData, setFilteredData] = useState<any[]>([]);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await axios.get(`${API_URL}/data/item`);
+                const response = await axios.get(`${API_URL}/data/supply`);
                 if (response.status === 200) {
                     const origins = {
-                        headings: [{ text: "Producto", object: "producto" }, { text: "Organización", object: "organizacion" }, { text: "Descripción", object: "denomination" }, { text: "Cupo", object: "cupo" }, { text: "Activo disponible", object: "active_disponible" }, { text: "Activo asignado", object: "active_asignado" }, { text: "Activo total", object: "active_total" }, { text: "Reserva recibido", object: "reserved_recibido" }, { text: "Reserva ubicado", object: "reserved_ubicado" }, { text: "Reserva parcialmente asignado", object: "reserved_parcialmente_asignado" }, { text: "Reserva asignado", object: "reserved_asignado" }, { text: "Reserva perdido", object: "reserved_perdido" }, { text: "Reserva total", object: "reserved_total" }, { text: "OBLPN picking", object: "oblpn_picking" }, { text: "OBLPN empacado", object: "oblpn_empacado" }, { text: "OBLPN cargado", object: "oblpn_cargado" }, { text: "OBLPN total", object: "oblpn_total" }, { text: "UOM total", object: "uom_total" }, { text: "Total de piezas", object: "total_piezas" }, { text: "Registro", object: "creation" }],
+                        headings: [{ text: "LPN", object: "lpn" },
+                            { text: "Recibido", object: "arrived" },
+                            { text: "Cantidad", object: "cantidad" },
+                            { text: "Carga", object: "carga" },
+                            { text: "Creación", object: "creation" },
+                            { text: "Fecha de cierre", object: "fecha_de_cierre" },
+                            { text: "Fecha de envío", object: "fecha_de_envio" },
+                            { text: "Item", object: "item_identifier" },
+                            { text: "Latitude", object: "latitude" },
+                            { text: "Longitude", object: "longitude" },
+                            { text: "Origen", object: "origin_identifier" },
+                            { text: "Transporte", object: "shipment_identifier" },
+                            { text: "Usuario", object: "user_identifier" }],
                         rows: response.data
                     };
                     setData(origins);
@@ -52,4 +64,4 @@ const Item: FC = () => {
     );
 };
 
-export default Item;
+export default Supply;
