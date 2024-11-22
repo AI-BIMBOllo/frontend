@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import styles from './Table.module.css';
 
 type TableProps = {
@@ -7,7 +9,7 @@ type TableProps = {
     footers: { [key: string]: any }[];
 }
 
-const Table: FC<TableProps> = ({ headings, rows, footers }) => {
+const Table: FC<TableProps> = ({ headings, rows, footers = [] }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 20;
 
@@ -37,7 +39,7 @@ const Table: FC<TableProps> = ({ headings, rows, footers }) => {
                             </tr>
                         </thead>
                     )}
-                    {currentRows && currentRows.length > 0 && (
+                    {headings && headings.length > 0 && currentRows && currentRows.length > 0 && (
                         <tbody>
                             {currentRows.map((row, rowIndex) => (
                                 <tr key={rowIndex}>
@@ -64,7 +66,15 @@ const Table: FC<TableProps> = ({ headings, rows, footers }) => {
                             ))}
                         </tbody>
                     )}
-                    {footers && footers.length > 0 && (
+                    {headings && headings.length > 0 && (!rows || rows.length === 0) &&  (
+                        <tbody>
+                            <tr>
+                                <td colSpan={headings.length + 1}>
+                                <FontAwesomeIcon icon={faFolderOpen}/><span>&nbsp;&nbsp;&nbsp;Sin registros</span>
+                                </td>
+                            </tr>
+                    </tbody>)}
+                    {headings && headings.length > 0 && footers && footers.length > 0 && (
                         <tfoot>
                             {footers.map((footer, rowIndex) => (
                                 <tr key={rowIndex}>

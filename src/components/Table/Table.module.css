@@ -1,7 +1,10 @@
 .table-container {
     width: 100%;
-    overflow-x: auto; /* Scroll horizontal */
+    overflow-x: auto;
     margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table {
@@ -17,8 +20,8 @@
 }
 
 .table th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #f9f9f9;
+    color: #555;
     font-weight: bold;
 }
 
@@ -34,7 +37,7 @@
     display: flex;
     justify-content: center;
     margin: 10px 0;
-    overflow-x: auto; /* Scroll horizontal para paginación */
+    overflow-x: auto;
 }
 
 .pagination button {
@@ -42,8 +45,9 @@
     margin: 0 2px;
     padding: 5px 10px;
     cursor: pointer;
-    background-color: #f2f2f2;
-    font-size: smaller; /* Tamaño de fuente más pequeño */
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: smaller;
 }
 
 .pagination button.active {
