@@ -18,6 +18,7 @@ const Forecast: FC = () => {
                     const origins = {
                         headings: [{ text: "Identificador", object: "identifier" },
                             { text: "Error", object: "error" },
+                            { text: "Solicitud", object: "is_request" },
                             { text: "Registro", object: "creation" },],
                         rows: response.data
                     };
