@@ -4,6 +4,9 @@ import axios from "axios";
 import styles from "./TrucksPage.module.css";
 import MapComponent from "@/components/MapComponent/MapComponent";
 import Popup from "../../components/Popup/Popup";
+import { io, Socket } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { API_URL } from "@/config";
 
 interface Shipment {
     lat: number;
@@ -93,6 +96,44 @@ interface Shipment {
   
       fetchData();
     }, []);
+
+        // Websocket connection
+        let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+        useEffect(() => {
+          // Connect to the server
+          socket = io(API_URL);
+          // Listen for events
+          socket.on('connect', () => {
+            console.log('Connected to server');
+          });
+          socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+          });
+          socket.on('mapa', async () => {
+            try {
+              // Reutilizar fetchData para obtener los datos actualizados
+              const response = await axios.get("http://localhost:5000/data/shipment");
+              if (response.status === 200) {
+                const formattedData = response.data.map((item: any) => ({
+                  lat: item.latitude,
+                  lng: item.longitude,
+                  title: item.denomination,
+                  description: `Capacidad: ${item.capacity}`,
+                  capacity: item.capacity,
+                  is_available: item.is_available
+                }));
+                setMapData(formattedData); // Actualiza todos los datos del mapa
+                setFilteredData(formattedData); // Aplica el filtro actual
+              }
+            } catch (error: any) {
+              console.error("Error fetching updated map data:", error.message);
+            }
+          });
+          return () => {
+            // Disconnect from the server
+            socket.disconnect();
+          };
+        }, []);
   
     const handleFilterChange = (capacity: number | null) => {
       setFilterCapacity(capacity);
