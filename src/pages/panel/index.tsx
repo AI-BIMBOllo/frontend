@@ -14,16 +14,17 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function PanelPage() {
+
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-  const onSubmit = async (data : any) => {
+  const onSubmit = async (data: any) => {
     const formData = new FormData();
     formData.append('file', data.file[0]);
 
     try {
       const response = await axios.post('http://127.0.0.1:5000/data/xlsx', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -41,45 +42,42 @@ export default function PanelPage() {
       <Head>
         <title>Panel</title>
       </Head>
-      <h1>Panel</h1>
+      <h1>Panel de Administración</h1>
       
       <section>
-  <div className={styles.formContainer}>
-    <h6>Subir archivo Excel</h6>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.formGroup}>
-        <label htmlFor="file" className={styles.label}>Seleccione la hoja de cálculo:</label>
-        <input
-          type="file"
-          id="file"
-          className={styles.inputFile}
-          {...register('file', { required: true })}
-          accept=".xlsx,.xls"
-        />
-        {errors.file && <span className={styles.errorMessage}>El archivo es obligatorio</span>}
-      </div>
+        <div className={styles.formContainer}>
+          <h5>Procesar archivo Excel</h5>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={styles.formGroup}>
+              <label htmlFor="file" className={styles.label}>Seleccione la hoja de cálculo:</label>
+              <input
+                type="file"
+                id="file"
+                className={styles.inputFile}
+                {...register('file', { required: true })}
+                accept=".xlsx,.xls"
+              />
+              {errors.file && <span className={styles.errorMessage}>El archivo XLSX es obligatorio</span>}
+            </div>
 
-      <div>
-        <button type="submit" className={styles.submitButton}>Subir archivo</button>
-      </div>
-    </form>
-  </div>
-</section>
-
-
-      <section>
-        <Forecast/>
-        <Origin/>
-        <Item/>
-        <Order/>
-        <Supply/>
-        <Request/>
-        <Shipment/>
-        <Package/>
+            <div>
+              <button type="submit" className={styles.submitButton}>Subir archivo</button>
+            </div>
+          </form>
+        </div>
       </section>
 
-      {/* Componente del Mapa */}
-      {/*<MapComponent isAdmin={true} />*/}
+
+      <section style={{marginBottom: '50px',}}>
+      <Forecast />
+      <Shipment />
+      <Order />
+      <Request />
+      <Supply />
+      <Item />
+      <Origin />
+      <Package />
+      </section>
     </div>
   );
 }

@@ -1,23 +1,23 @@
 .filterContainer {
-    display: flex;
-    flex-direction: row; /* Asegura que los inputs estén apilados */
-    gap: 10px; /* Espaciado entre el input y el select */
-    margin: 20px 0; /* Márgenes superior e inferior para el componente */
-    width: 30%; /* Asegura que ocupe el ancho disponible */
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 20px 0;
+  width: 30%;
 }
 
 .filterInput {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%; /* Asegura que el input se ajuste al contenedor */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
 }
 
 .filterSelect {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%; /* Asegura que el select se ajuste al contenedor */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
 }
