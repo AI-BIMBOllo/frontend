@@ -7,6 +7,7 @@ import Popup from "../../components/Popup/Popup";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { API_URL } from "@/config";
+import { toast } from "react-toastify";
 
 interface Shipment {
     lat: number;
