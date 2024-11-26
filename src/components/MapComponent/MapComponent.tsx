@@ -1,5 +1,6 @@
 /// <reference types="@types/google.maps" />
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
+
 
 interface Pin {
   lat: number;
@@ -15,66 +16,78 @@ interface MapComponentProps {
 }
 
 const MapComponent: React.FC<MapComponentProps> = ({ pins, mapContainerId }) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const markersRef = useRef<google.maps.Marker[]>([]);
 
   useEffect(() => {
-    const initMap = () => {
-      const mapInstance = new google.maps.Map(
+    // Initialize the map
+    if (!mapRef.current) {
+      mapRef.current = new google.maps.Map(
         document.getElementById(mapContainerId) as HTMLElement,
         {
           zoom: 12,
-          center: { lat: 19.4326, lng: -99.1332 }, // Initial center (Mexico City)
+          center: { lat: 19.4326, lng: -99.1332 }, // Default center (Mexico City)
         }
       );
-      setMap(mapInstance);
-    };
-
-    initMap();
+    }
   }, [mapContainerId]);
 
   useEffect(() => {
-    if (map && pins.length > 0) {
+    if (mapRef.current) {
+      // Clear existing markers
+      markersRef.current.forEach((marker) => marker.setMap(null));
+      markersRef.current = [];
+
+      // Create LatLngBounds to adjust the map view to the markers
       const bounds = new google.maps.LatLngBounds();
 
+      // Add new markers based on filtered pins
       pins.forEach((location: Pin) => {
-        // Set the default blue icon from Google Maps
-        let markerIcon = "https://i.postimg.cc/28YD8NM2/Blue-Icon-Map.png"; // Blue marker by default
-
-        // Conditional logic if `is_available` exists
+        // Determine marker icon based on availability
+        let markerIcon = "https://i.postimg.cc/28YD8NM2/Blue-Icon-Map.png"; // Default blue icon
         if (location.is_available !== undefined) {
           markerIcon = location.is_available
             ? "https://i.postimg.cc/4NjphwvL/Green-Icon-Map.png" // Green icon if available
-            : "https://i.postimg.cc/k4xJMQNp/Red-Icon-Map.png";   // Red icon if not available
+            : "https://i.postimg.cc/k4xJMQNp/Red-Icon-Map.png"; // Red icon if not available
         }
 
+        // Create marker
         const marker = new google.maps.Marker({
           position: { lat: location.lat, lng: location.lng },
-          map: map,
+          map: mapRef.current,
           title: location.title,
           label: {
             text: location.title,
             color: "black",
           },
           icon: {
-            url: markerIcon, 
+            url: markerIcon,
             scaledSize: new google.maps.Size(40, 40),
           },
         });
 
+        // Extend the bounds to include this marker's position
+        bounds.extend(new google.maps.LatLng(location.lat, location.lng));
+
+        // Add info window
         const infoWindow = new google.maps.InfoWindow({
           content: `<div>${location.description}</div>`,
         });
 
         marker.addListener("click", () => {
-          infoWindow.open(map, marker);
+          infoWindow.open(mapRef.current, marker);
         });
 
-        bounds.extend(new google.maps.LatLng(location.lat, location.lng));
+        // Store the marker for cleanup
+        markersRef.current.push(marker);
       });
 
-      map.fitBounds(bounds);
+      // Adjust the map to fit the bounds if there are any pins
+      if (pins.length > 0) {
+        mapRef.current.fitBounds(bounds);
+      }
     }
-  }, [map, pins]);
+  }, [pins]); // Re-render markers whenever `pins` changes
 
   return <div id={mapContainerId} style={{ height: "100%", width: "100%" }}></div>;
 };

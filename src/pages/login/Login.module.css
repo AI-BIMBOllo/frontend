@@ -28,11 +28,14 @@
 }
 
 .formContent {
-  max-width: 400px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.formContent .column {
+  padding-bottom: 1rem;
 }
 
 .formContent h1,

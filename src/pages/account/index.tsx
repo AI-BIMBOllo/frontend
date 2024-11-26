@@ -25,7 +25,7 @@ export default function AccountPage() {
           </div>
           <div className="mb-4">
             <label className="font-semibold">User ID:</label>
-            <p>{user?.id}</p>
+            <p>{user?.identifier}</p>
           </div>
         </div>
       </section>

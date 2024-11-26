@@ -7,7 +7,8 @@ import { API_URL } from "@/config";
 import styles from "./Login.module.css";
 
 export default function LoginPage() {
-  const { setUser } = useDataContext();
+  const router = useRouter();
+  const { user, setUser } = useDataContext();
   const [formData, setFormData] = React.useState({
     username: '',
     password: ''
@@ -30,16 +31,7 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token in localStorage
         localStorage.setItem('token', data.access_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        // Update user context with all required fields from the API response
-        setUser({
-          id: data.user.id,
-          username: data.user.username,
-          email: data.user.email
-        });
-        // Redirect to home or dashboard
         window.location.href = '/';
       } else {
         setError(data.msg || 'Login failed');
@@ -75,6 +67,10 @@ export default function LoginPage() {
     });
   };
 
+  if (user) {
+    router.push('/');
+  }
+
   return (
     <>
       <Head>
@@ -93,7 +89,7 @@ export default function LoginPage() {
               {error}
             </div>
           )}
-          <form onSubmit={handleSubmitDummy}> {/* Attach handleSubmit */}
+          <form onSubmit={handleSubmit}>
             <div className={styles.formContent}>
               <label htmlFor="exampleInputEmail1" className="form-label">
                 Usuario

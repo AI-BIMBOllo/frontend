@@ -1,52 +1,62 @@
 import React, { useEffect } from 'react';
-import { DataProvider, useDataContext } from '@/context/DataContext';
-import { Sidebar } from '@/components/Sidebar';
 import { useRouter } from 'next/router';
+import { useDataContext } from '@/context/DataContext';
+import { Sidebar } from '@/components/Sidebar';
+import { API_URL } from '@/config';
 import styles from './Layout.module.css';
 
-// Create a wrapper component to handle auth
-const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useDataContext();
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { setUser } = useDataContext();
   const router = useRouter();
-  const isLoginPage = router.pathname === '/login';
+  const isAuthPage = router.pathname === '/login' || router.pathname === '/register';
 
   useEffect(() => {
-    console.log("Checking user authentication status:", user); // Agrega esta línea para depuración
-    if (!user) {
-      console.log("Redirecting to login because user is not authenticated");
-      router.push('/login');
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/protected`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const userData = await response.json();
+
+        if (token) {
+          try {
+            if (!userData) {
+              router.push('/login');
+            }
+            setUser(userData);
+          } catch (err) {
+            console.error("Error parsing user from localStorage:", err);
+            localStorage.removeItem('token');
+          }
+        } else {
+          if (!isAuthPage) {
+            router.push('/login');
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        localStorage.removeItem('token');
+        router.push('/login');
+      }
+    };
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUser();
     }
-    // Si el usuario existe y estás en la página de login, redirige al home
-    if (user && isLoginPage) {
-      router.push('/');
-    }
-  }, [user, isLoginPage, router]);
+  }, []);
   
-
-  // Show loading or nothing while redirecting
-  if (!user && !isLoginPage) {
-    return null; // or return a loading spinner
-  }
-
   return (
     <main className={styles.main}>
-      {!isLoginPage && <Sidebar className={styles.sidebar} />}
+      {!isAuthPage && <Sidebar className={styles.sidebar} />}
       <div className={styles.panel}>
         {children}
       </div>
     </main>
-  );
-};
-
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-
-  return (
-    <DataProvider>
-      <AuthWrapper>
-        {children}
-      </AuthWrapper>
-    </DataProvider>
   );
 };
 

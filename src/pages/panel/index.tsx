@@ -12,6 +12,7 @@ import Package from "@/components/Tables/Package";
 import Forecast from "@/components/Tables/Forecast";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { API_URL } from "@/config";
 
 export default function PanelPage() {
 
@@ -21,8 +22,10 @@ export default function PanelPage() {
     const formData = new FormData();
     formData.append('file', data.file[0]);
 
+    
     try {
-      const response = await axios.post('http://127.0.0.1:5000/data/xlsx', formData, {
+      console.log("Subiendo archivo...");
+      const response = await axios.post(`${API_URL}/data/xlsx`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -34,6 +37,7 @@ export default function PanelPage() {
       }
     } catch (error) {
       console.error("Hubo un error al subir el archivo:", error);
+      alert("Hubo un error al subir el archivo.");
     }
   };
 
