@@ -1,0 +1,23 @@
+.filterContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 20px 0;
+  width: 30%;
+}
+
+.filterInput {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.filterSelect {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
