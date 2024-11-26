@@ -4,6 +4,13 @@ import axios from "axios";
 import styles from "./TrucksPage.module.css";
 import MapComponent from "@/components/MapComponent/MapComponent";
 import Popup from "../../components/Popup/Popup";
+<<<<<<< Updated upstream
+=======
+import { io, Socket } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { API_URL } from "@/config";
+import { toast } from "react-toastify";
+>>>>>>> Stashed changes
 
 interface Shipment {
     lat: number;
