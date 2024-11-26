@@ -15,7 +15,6 @@ export default function TimeSeries() {
       try {
         const response = await fetch(`${API_URL}/forecast/request?n_days=30`);
         const data = await response.json();
-        console.log('Fetched chart data:', data);
         
         // Set the chart data state
         setChartData(data);

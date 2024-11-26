@@ -1,3 +1,4 @@
+import { API_URL } from "@/config";
 import {
   BarElement,
   CategoryScale,
@@ -8,21 +9,22 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 
 // Register required chart components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 export default function Stats() {
+  const [chartData, setChartData] = useState(null);
+
   // Function to dynamically set colors based on the value
   function colorize(ctx: { parsed: { y: number } }) {
     const v = ctx.parsed.y;
-    return v < -50 ? "#D60000"  // Dark red for large negative
-      : v < -25 ? "#F46300"     // Orange for medium negative
-        : v < 25 ? "#44DE28"    // Green for small negative & positive
-          : v < 50 ? "#F46300"  // Orange for medium positive
+    return v < -2000 ? "#D60000"  // Dark red for large negative
+      : v < -1000 ? "#F46300"     // Orange for medium negative
+        : v < 500 ? "#44DE28"    // Green for small negative & positive
+          : v < 1000 ? "#F46300"  // Orange for medium positive
             : "#D60000";        // Dark red for large positive
   }
 
@@ -35,14 +37,37 @@ export default function Stats() {
     return ctx.p0.parsed.y < ctx.p1.parsed.y ? defaultColor : undefined;
   }
 
+  useEffect(() => {
+    // Fetch data from the Flask API when the component mounts
+    const fetchChartData = async () => {
+      try {
+        const response = await fetch(`${API_URL}/forecast/request/error`);
+        const data = await response.json();
+        console.log(data);
+        
+        // Set the chart data state
+        setChartData(data);
+      } catch (error) {
+        console.error('Error fetching chart data:', error);
+      }
+    };
+
+    fetchChartData();
+  }, []);
+
 
   // DEBUG values || Change with real data from axios API call
-  const data = {
-    labels: ["Lun 11-11-24", "Mar 12-11-24", "Mie 13-11-24", "Jue 14-11-24", "Vie 15-11-24", "Sab 16-11-24", "Dom 17-11-24"],
-    absoluteError: [35, 10, null, 81, 56, 20, 40],
-    realError: [35, -10, 40, -81, 56, -20, 40],
-    averageError: [21, 17, null, 26, 25, 16, 16],
-    topTenDays: [{ date: "Jue 14-11-24", error: 81 }, { date: "Vie 15-11-24", error: 56 }, { date: "Dom 17-11-24", error: 40 }],
+  // const chartData = {
+  //   labels: ["Lun 11-11-24", "Mar 12-11-24", "Mie 13-11-24", "Jue 14-11-24", "Vie 15-11-24", "Sab 16-11-24", "Dom 17-11-24"],
+  //   absoluteError: [500, 900, null, 2100, 230, 1700, 2150],
+  //   realError: [500, -900, null, -2100, 230, -1700, 2150],
+  //   averageError: [500,700,700,1166.67,932.5,1086,1263.33],
+  //   topTenDays: [{ date: "Jue 14-11-24", error: 81 }, { date: "Vie 15-11-24", error: 56 }, { date: "Dom 17-11-24", error: 40 }],
+  // }
+
+  if (!chartData) {
+    // Show a loading state while data is being fetched
+    return <div>Loading...</div>;
   }
 
 
@@ -54,11 +79,11 @@ export default function Stats() {
         <div className="w-75">
           <Line
             data={{
-              labels: data.labels,
+              labels: chartData.labels,
               datasets: [
                 {
                   label: "Error absoluto",
-                  data: data.absoluteError,
+                  data: chartData.absoluteError,
                   backgroundColor: "#111",
                   fill: false,
                   pointRadius: 4,
@@ -74,7 +99,7 @@ export default function Stats() {
                 },
                 {
                   label: "Error absoluto promedio",
-                  data: data.averageError,
+                  data: chartData.averageError,
                   backgroundColor: 'rgb(75, 192, 192)',
                   borderWidth: 6,
                   fill: false,
@@ -120,7 +145,7 @@ export default function Stats() {
           />
           <Bar
             data={{
-              labels: data.labels,
+              labels: chartData.labels,
               datasets: [
                 {
                   label: "Error absoluto",
@@ -129,7 +154,7 @@ export default function Stats() {
                   borderWidth: 1,
                   hoverBackgroundColor: (context) => colorize(context),
                   hoverBorderColor: (context) => colorize(context),
-                  data: data.absoluteError,
+                  data: chartData.absoluteError,
                 },
                 {
                   label: "Error real",
@@ -138,7 +163,7 @@ export default function Stats() {
                   borderWidth: 1,
                   hoverBackgroundColor: (context) => colorize(context),
                   hoverBorderColor: (context) => colorize(context),
-                  data: data.realError,
+                  data: chartData.realError,
                 },
                 {
                   label: "Error absoluto promedio",
@@ -147,7 +172,7 @@ export default function Stats() {
                   borderWidth: 4,
                   hoverBackgroundColor: (context) => colorize(context),
                   hoverBorderColor: (context) => colorize(context),
-                  data: data.averageError,
+                  data: chartData.averageError,
                 },
               ],
             }}
@@ -182,7 +207,7 @@ export default function Stats() {
         <div className="w-25 pe-4">
           <h5>Días con mayor error</h5>
           <ol className="list-unstyled">
-            {data.topTenDays.map((day, index) => (
+            {chartData.topTenDays.map((day, index) => (
               <li
                 className="d-flex justify-content-between align-items-center py-2 border-bottom"
                 key={index}
