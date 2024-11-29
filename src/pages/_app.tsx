@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       {/* Cargar Google Maps API */}
       <Script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADpn5u0K4gEGurw1BAYg-z6Tk6SakF5jg&libraries=places"
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GM_API_KEY}&libraries=places`}
         strategy="beforeInteractive"
       />
       <DataProvider>
